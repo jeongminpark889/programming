@@ -82,7 +82,7 @@ def update_tables(cnt_book,cnt_name_passenger,counter,seats_occupied_in_seating_
                 Seats_no_occupied_array[j][2]=cnt_name_passenger
                 
                 cur.execute('''UPDATE seating SET name=? WHERE row=? and seat=?''', (cnt_name_passenger,Seats_no_occupied_array[j][0],Seats_no_occupied_array[j][1]))
-                #if Seats_no_occupied_array[j][2]
+                #if Seats_no_occupied_array[j][2]:
                 update_metrics_table_in_db(count_passengers_refused,count_passengers_seperated)
                 array_seperated_passengers.append(Seats_no_occupied_array[j][0])
                 
