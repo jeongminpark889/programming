@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[ ]:
+# In[4]:
 
 #********************************** Airline Seating Assignment ********************************** 
 
@@ -19,20 +19,26 @@ import math
 
 #******creating connection to the databse**************************
 
-con = sqlite3.connect('airline_seating.db')
+con = sqlite3.connect('/Users/Nikunj/Downloads/airline_seating.db')
 con.text_factory = str  
-cur = con.cursor() #cursor
+cur = con.cursor()           #cursor
+
+
 
 
 # Reading the input CSV file
 def file_read_total_bookings():
-    total_bookings=pd.read_csv('bookings.csv', names=['passsenger_name','passenger_count'])
+    total_bookings=pd.read_csv('/Users/Nikunj/Downloads/bookings.csv', names=['passsenger_name','passenger_count'])
     total_count = np.array([total_bookings['passenger_count']])
     total_bookings_array=np.array(total_bookings)
     #print(total_count)
     return total_bookings_array, total_count
 
 total_bookings_array,total_count=file_read_total_bookings()
+
+
+
+
 
 
 # Checking for the occupied seats and grouping themby row,seat
@@ -45,7 +51,11 @@ def seats_occupied_in_seating_table_db():
     return seats_occupied_in_seating_array
 
 seats_occupied_in_seating_array=seats_occupied_in_seating_table_db()
-print(seats_occupied_in_seating_array)
+#print(seats_occupied_in_seating_array)
+
+
+
+
 
 
 # Checking for the non-occupied seats and grouping themby row,seat
@@ -58,7 +68,8 @@ def seats_not_occupied_in_seating_table_db():
     return Seats_no_occupied_array
 
 Seats_no_occupied_array=seats_not_occupied_in_seating_table_db()
-print(Seats_no_occupied_array)
+#print(Seats_no_occupied_array)
+
 
 
 # Defining a function to update the table metrics
@@ -67,6 +78,10 @@ def update_metrics_table_in_db(count_passengers_refused,count_passengers_seperat
                   VALUES(?,?)''', (count_passengers_refused,count_passengers_seperated))
     
     return
+
+
+
+
 
 
 #DEfining a function to update the seating table and also update teh metrics tablle 
@@ -82,7 +97,7 @@ def update_tables(cnt_book,cnt_name_passenger,counter,seats_occupied_in_seating_
                 Seats_no_occupied_array[j][2]=cnt_name_passenger
                 
                 cur.execute('''UPDATE seating SET name=? WHERE row=? and seat=?''', (cnt_name_passenger,Seats_no_occupied_array[j][0],Seats_no_occupied_array[j][1]))
-                #if Seats_no_occupied_array[j][2]:
+                #if Seats_no_occupied_array[j][2]
                 update_metrics_table_in_db(count_passengers_refused,count_passengers_seperated)
                 array_seperated_passengers.append(Seats_no_occupied_array[j][0])
                 
@@ -92,7 +107,9 @@ def update_tables(cnt_book,cnt_name_passenger,counter,seats_occupied_in_seating_
         count_passengers_seperated=most_common[1]
         update_metrics_table_in_db(count_passengers_refused,count_passengers_seperated)
         
-                     
+             
+    
+                
     return Seats_no_occupied_array
 
 
@@ -100,8 +117,8 @@ def update_tables(cnt_book,cnt_name_passenger,counter,seats_occupied_in_seating_
 
 def place_bookings(total_bookings_array,total_count=file_read_total_bookings(),seats_occupied_in_seating_array=seats_occupied_in_seating_table_db()):
     counter=0
-    count_passengers_refused=0     #count for refused passengers in a booking
-    count_passengers_seperated =0  #count for seperated passengers in a booking
+    count_passengers_refused=0                    #count for refused passengers in a booking
+    count_passengers_seperated =0                 #count for seperated passengers in a booking
     for i in range(total_bookings_array.shape[0]):
         cnt_book=total_bookings_array[i][1]
         cnt_name_passenger=total_bookings_array[i][0]
@@ -119,7 +136,29 @@ def place_bookings(total_bookings_array,total_count=file_read_total_bookings(),s
         if counter+cnt_book>Max_rows_seating : 
              count_passengers_refused= cnt_book
             
-             update_metrics_table_in_db(count_passengers_refused,count_passengers_seperated)  #updating the metrics table
+             update_metrics_table_in_db(count_passengers_refused,count_passengers_seperated) #updating the metrics table
                 
     return Seats_no_occupied_array 
+
+Seats_final_occupied_array=place_bookings(total_bookings_array,total_count=file_read_total_bookings(),seats_occupied_in_seating_array=seats_occupied_in_seating_table_db())
+#print(Seats_final_occupied_array)
+
+def final_seating_table():
+    final_seating = cur.execute('''SELECT * From seating''')
+    final_seating=final_seating.fetchall()
+    return final_seating
+final_seating=final_seating_table()
+print(final_seating)
+
+def final_metrics_table():
+    final_metrics = cur.execute('''SELECT * From metrics''')
+    final_metrics=final_metrics.fetchall()
+    return final_metrics
+final_metrics=final_metrics_table()
+print(final_metrics)
+
+
+# In[ ]:
+
+
 
