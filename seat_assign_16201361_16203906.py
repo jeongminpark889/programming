@@ -19,14 +19,14 @@ import math
 
 #******creating connection to the databse**************************
 
-con = sqlite3.connect('/Users/Nikunj/Downloads/airline_seating.db')
+con = sqlite3.connect('airline_seating.db')
 con.text_factory = str  
 cur = con.cursor()  #cursor
 
 
 # Reading the input CSV file
 def file_read_total_bookings():
-    total_bookings=pd.read_csv('/Users/Nikunj/Downloads/bookings.csv', names=['passsenger_name','passenger_count'])
+    total_bookings=pd.read_csv('bookings.csv', names=['passsenger_name','passenger_count'])
     total_count = np.array([total_bookings['passenger_count']])
     total_bookings_array=np.array(total_bookings)
     #print(total_count)
@@ -99,8 +99,8 @@ def update_tables(cnt_book,cnt_name_passenger,counter,seats_occupied_in_seating_
 
 def place_bookings(total_bookings_array,total_count=file_read_total_bookings(),seats_occupied_in_seating_array=seats_occupied_in_seating_table_db()):
     counter=0
-    count_passengers_refused=0                    #count for refused passengers in a booking
-    count_passengers_seperated =0                 #count for seperated passengers in a booking
+    count_passengers_refused=0      #count for refused passengers in a booking
+    count_passengers_seperated =0   #count for seperated passengers in a booking
     for i in range(total_bookings_array.shape[0]):
         cnt_book=total_bookings_array[i][1]
         cnt_name_passenger=total_bookings_array[i][0]
