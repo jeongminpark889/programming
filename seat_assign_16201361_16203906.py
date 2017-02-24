@@ -1,8 +1,6 @@
 
 # coding: utf-8
 
-# In[4]:
-
 #********************************** Airline Seating Assignment ********************************** 
 
 #******************** Nikunj(16201361),Jeongmin Park(16203906)***************************************
@@ -35,7 +33,7 @@ def file_read_total_bookings():
 total_bookings_array,total_count=file_read_total_bookings()
 
 
-# Checking for the occupied seats and grouping themby row,seat
+# Checking for the occupied seats and grouping them by row and seat
 def seats_occupied_in_seating_table_db():
     seats_occupied_in_seating = []
     for row in cur.execute('select row, seat,name from seating where name != "" group by row,seat '):
@@ -48,7 +46,7 @@ seats_occupied_in_seating_array=seats_occupied_in_seating_table_db()
 #print(seats_occupied_in_seating_array)
 
 
-# Checking for the non-occupied seats and grouping themby row,seat
+# Checking for the non-occupied seats and grouping them by row and seat
 def seats_not_occupied_in_seating_table_db():
     seats_not_occupied_in_seating = []
     for row in cur.execute('select row, seat,name from seating where name = "" group by row,seat '):
@@ -69,7 +67,7 @@ def update_metrics_table_in_db(count_passengers_refused,count_passengers_seperat
     return
 
 
-#DEfining a function to update the seating table and also update teh metrics tablle 
+#Defining a function to update the seating table and also update the metrics table 
 
 def update_tables(cnt_book,cnt_name_passenger,counter,seats_occupied_in_seating_array):
     count_passengers_refused=0
