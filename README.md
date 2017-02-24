@@ -1,7 +1,7 @@
 # programming
 Airline seating programming assignment
 
-Nikunj Sharda(16201361)
+Nikunj(16201361)
 Jeongmin Park(16203906)
 
 To Assign seats to each passenger according to the booking, 
